@@ -8,6 +8,7 @@ const port = process.env.PORT || 5000;
 //   res.status(200).json({ message: "Get all contacts" });
 // });
 
+app.use(express.json()); // parser middleware to get req body from client
 app.use("/api/contacts", require("./routes/contactRoutes"));
 
 app.listen(port, () => {
