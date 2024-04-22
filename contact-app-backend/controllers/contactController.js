@@ -22,7 +22,6 @@ const getContact = asyncHandler(async (req, res) => {
 //@access public
 
 const createContact = asyncHandler(async (req, res) => {
-  
   console.log("The request body is", req.body);
   const { name, email, phone } = req.body;
   if (!name || !email || !phone) {
@@ -58,7 +57,19 @@ const getContactById = asyncHandler(async (req, res) => {
 //@access public
 
 const updateContact = asyncHandler(async (req, res) => {
-  res.status(200).json({ message: `Update contact for ${req.params.id}` });
+  const contact = await Contact.findById(req.params.id);
+  if (!contact) {
+    res.status(404);
+    throw new Error("Contact not found");
+  }
+  const updatedContact = await Contact.findByIdAndUpdate(
+    req.params.id,
+    req.body,
+    { new: true }
+  );
+
+  res.status(200).json(updatedContact);
+  // res.status(200).json({ message: `Update contact for ${req.params.id}` });
 });
 
 //@desc delte contact by id
