@@ -14,7 +14,12 @@ const port = process.env.PORT || 5000;
 //Connect databse
 
 app.use(express.json()); // parser middleware to get req body from client
+
+//Contact route
 app.use("/api/contacts", require("./routes/contactRoutes"));
+
+// User route
+app.use("/api/users", require("./routes/userRoutes"));
 app.use(errorhandler); // error handler middlewasre
 
 app.listen(port, () => {
