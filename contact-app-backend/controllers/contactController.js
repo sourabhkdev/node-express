@@ -1,5 +1,8 @@
 const asyncHandler = require("express-async-handler"); // use express-async-handler to eliminate use of try catch
 
+// contact model
+const Contact = require("../model/contactModel");
+
 //@desc Get all contacts
 //@route GET /api/contacts
 //@access public
@@ -10,7 +13,8 @@ here we will use AYNC AWAIT*/
 }
 
 const getContact = asyncHandler(async (req, res) => {
-  res.status(200).json({ message: "Get all contacts" });
+  const contacts = await Contact.find();
+  res.status(200).json(contacts);
 });
 
 //@desc Create new contacts
@@ -18,13 +22,21 @@ const getContact = asyncHandler(async (req, res) => {
 //@access public
 
 const createContact = asyncHandler(async (req, res) => {
+  
   console.log("The request body is", req.body);
   const { name, email, phone } = req.body;
   if (!name || !email || !phone) {
     res.status(400);
     throw new Error("All fields mandatory");
   }
-  res.status(200).json({ message: "Create contact" });
+  const contact = await Contact.create({
+    name,
+    email,
+    phone,
+  });
+
+  res.status(201).json(contact);
+  // res.status(200).json({ message: "Create contact" });
 });
 
 //@desc Get contact by id
