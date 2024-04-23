@@ -6,7 +6,7 @@ const {
   updateContact,
   deleteContact,
 } = require("../controllers/contactController");
-
+const validateToken = require("../middleware/validateTokenHandler");
 const router = express.Router();
 
 // //GET OCNTACTE ROUTE
@@ -23,6 +23,9 @@ const router = express.Router();
 
 // //DELETE OCNTACTE ROUTE
 // router.route("/:id").delete(deleteContact);
+
+// token validation after making contacts route PRIVATE
+router.use(validateToken);
 
 // combine all matching route
 router.route("/").get(getContact).post(createContact);
